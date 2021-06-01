@@ -6,6 +6,7 @@
 	#include <unistd.h> //for close
 	#include <stdlib.h> //for exit
 	#include <string.h> //for memset
+	#include <conio.h>
 	int OSInit( void )
 	{
 		WSADATA wsaData;
@@ -55,9 +56,22 @@ int main( int argc, char * argv[] )
 	/////////////
 	//Execution//
 	/////////////
-
-	execution( internet_socket, internet_address, internet_address_length );
-
+	int counter = 0;
+	while(1)
+	{
+		execution( internet_socket, internet_address, internet_address_length );
+		counter++;
+		
+		if(kbhit())
+		{
+			if('n' == getch())
+			{
+				break;
+			}
+		}
+	}
+	
+	printf("Het aantal ontvangen pakketten is: %d",counter);
 
 	////////////
 	//Clean up//
@@ -121,7 +135,7 @@ void execution( int internet_socket, struct sockaddr * internet_address, socklen
 {
 	//Step 2.1
 	int number_of_bytes_send = 0;
-	number_of_bytes_send = sendto( internet_socket, "Hello UDP world!", 16, 0, internet_address, internet_address_length );
+	number_of_bytes_send = sendto( internet_socket, "hello udp server", 16, 0, internet_address, internet_address_length );
 	if( number_of_bytes_send == -1 )
 	{
 		perror( "sendto" );

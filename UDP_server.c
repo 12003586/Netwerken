@@ -6,6 +6,7 @@
 	#include <unistd.h> //for close
 	#include <stdlib.h> //for exit
 	#include <string.h> //for memset
+	#include <conio.h>
 	int OSInit( void )
 	{
 		WSADATA wsaData;
@@ -53,9 +54,11 @@ int main( int argc, char * argv[] )
 	/////////////
 	//Execution//
 	/////////////
+	
 
 	execution( internet_socket );
 
+	
 
 	////////////
 	//Clean up//
