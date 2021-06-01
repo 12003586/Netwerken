@@ -33,6 +33,7 @@
 	#include <unistd.h> //for close
 	#include <stdlib.h> //for exit
 	#include <string.h> //for memset
+	#include <conio.h>
 	int OSInit( void ) {}
 	int OSCleanup( void ) {}
 #endif
@@ -56,23 +57,13 @@ int main( int argc, char * argv[] )
 	/////////////
 	//Execution//
 	/////////////
-	int counter = 0;
-	while(1)
-	{
-		execution( internet_socket, internet_address, internet_address_length );
-		counter++;
-		
-		if(kbhit())
-		{
-			if('n' == getch())
-			{
-				break;
-			}
-		}
-	}
-	
-	printf("Het aantal ontvangen pakketten is: %d",counter);
 
+	execution( internet_socket, internet_address, internet_address_length );
+
+		
+
+
+	
 	////////////
 	//Clean up//
 	////////////
@@ -134,26 +125,47 @@ int initialization( struct sockaddr ** internet_address, socklen_t * internet_ad
 void execution( int internet_socket, struct sockaddr * internet_address, socklen_t internet_address_length )
 {
 	//Step 2.1
-	int number_of_bytes_send = 0;
-	number_of_bytes_send = sendto( internet_socket, "hello udp server", 16, 0, internet_address, internet_address_length );
-	if( number_of_bytes_send == -1 )
-	{
-		perror( "sendto" );
-	}
+	int counter =0;
+	int counter1 = 0;
 
-	//Step 2.2
-	int number_of_bytes_received = 0;
-	char buffer[1000];
-	number_of_bytes_received = recvfrom( internet_socket, buffer, ( sizeof buffer ) - 1, 0, internet_address, &internet_address_length );
-	if( number_of_bytes_received == -1 )
+	while(1)
 	{
-		perror( "recvfrom" );
+		char string[16];
+		scanf("%s", &string);
+		int number_of_bytes_send = 0;
+		number_of_bytes_send = sendto( internet_socket, string, 16, 0, internet_address, internet_address_length );
+		if( number_of_bytes_send == -1 )
+		{
+			perror( "sendto" );
+		}
+
+		//Step 2.2
+		int number_of_bytes_received = 0;
+		char buffer[1000];
+		number_of_bytes_received = recvfrom( internet_socket, buffer, ( sizeof buffer ) - 1, 0, internet_address, &internet_address_length );
+		if( number_of_bytes_received == -1 )
+		{
+			perror( "recvfrom" );
+		}
+		else
+		{
+			buffer[number_of_bytes_received] = '\0';
+			printf( "Received : %s\n", buffer );
+		}
+		
+		counter++;
+		counter1++;
+		if(kbhit())
+		{
+			
+			if('n' == getch())
+			{
+				break;
+			}
+		}
 	}
-	else
-	{
-		buffer[number_of_bytes_received] = '\0';
-		printf( "Received : %s\n", buffer );
-	}
+	printf("Het aantal verstuurde pakketten is: %d\n",counter1);
+	printf("Het aantal ontvangen pakketten is: %d",counter);
 }
 
 void cleanup( int internet_socket, struct sockaddr * internet_address )

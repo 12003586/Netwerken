@@ -33,9 +33,11 @@
 	#include <unistd.h> //for close
 	#include <stdlib.h> //for exit
 	#include <string.h> //for memset
+	
 	int OSInit( void ) {}
 	int OSCleanup( void ) {}
 #endif
+#inlude <pthread.h>
 
 int initialization();
 int connection( int internet_socket );

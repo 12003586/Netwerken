@@ -6,7 +6,7 @@
 	#include <unistd.h> //for close
 	#include <stdlib.h> //for exit
 	#include <string.h> //for memset
-	#include <conio.h>
+	
 	int OSInit( void )
 	{
 		WSADATA wsaData;

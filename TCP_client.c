@@ -35,6 +35,7 @@
 	int OSInit( void ) {}
 	int OSCleanup( void ) {}
 #endif
+#include <pthread.h>
 
 int initialization();
 void execution( int internet_socket );
@@ -76,7 +77,7 @@ int initialization()
 	memset( &internet_address_setup, 0, sizeof internet_address_setup );
 	internet_address_setup.ai_family = AF_UNSPEC;
 	internet_address_setup.ai_socktype = SOCK_STREAM;
-	int getaddrinfo_return = getaddrinfo( "::1", "24042", &internet_address_setup, &internet_address_result );
+	int getaddrinfo_return = getaddrinfo( "::1", "24041", &internet_address_setup, &internet_address_result );
 	if( getaddrinfo_return != 0 )
 	{
 		fprintf( stderr, "getaddrinfo: %s\n", gai_strerror( getaddrinfo_return ) );
@@ -124,8 +125,11 @@ int initialization()
 void execution( int internet_socket )
 {
 	//Step 2.1
+	char string[16];
+	scanf("%s", &string);
+	
 	int number_of_bytes_send = 0;
-	number_of_bytes_send = send( internet_socket, "Hello TCP world!", 16, 0 );
+	number_of_bytes_send = send( internet_socket, string, 16, 0 );
 	if( number_of_bytes_send == -1 )
 	{
 		perror( "send" );
